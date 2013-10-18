@@ -1,0 +1,14 @@
+{
+   "activeVersions":[
+      {
+         "isActive":true,
+         "platform":{
+            "vendor":"Esri",
+            "name":"ArcGIS Desktop",
+            "version":"10.0"
+         },
+         "AddinInstallationURL":"",
+         "AddinInstallationVersion":"1.0.0.0"
+      }
+   ]
+}
