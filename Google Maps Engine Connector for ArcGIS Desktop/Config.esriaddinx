@@ -1,0 +1,71 @@
+﻿<ESRI.Configuration xmlns="http://schemas.esri.com/Desktop/AddIns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Google Maps Engine Connector for ArcGIS Desktop</Name>
+  <AddInID>{8d51bcaf-09d5-4dbc-a611-c0646933de50}</AddInID>
+  <Description>The Google Maps Engine connector for ArcGIS Desktop provides a suite of tools to enable ArcMap users to view, interact, and manage Google Maps Engine services.</Description>
+  <Version>1.0</Version>
+  <Image>Images\Google Maps Engine Add-in for ArcGIS.png</Image>
+  <Author>The Google Maps Engine Team</Author>
+  <Company>Google</Company>
+  <Date>10/13/2013</Date>
+  <Targets>
+    <Target name="Desktop" version="10.0" />
+  </Targets>
+  <AddIn language="CLR" library="Google Maps Engine Connector for ArcGIS Desktop.dll" namespace="com.google.mapsengine.connectors.arcgis">
+    <ArcMap>
+      <Extensions>
+        <Extension id="GoogleMapsEngineToolsExtensionForArcGIS" class="com.google.mapsengine.connectors.arcgis.GoogleMapsEngineToolsExtensionForArcGIS" productName="Google Maps Engine Connector for ArcGIS Desktop" showInExtensionDialog="true" autoLoad="true">
+          <Description>Google Maps Engine Connector for ArcGIS Desktop provide the ArcMap user with a rich toolset to interact with secure Google Maps Engine services. The toolbar provides users the ability to locate, display, and interact with published Google Maps Engine maps, spatially query and manage a users Google Maps Engine account, and publish new vector and raster data directly into Google Maps Engine.</Description>
+        </Extension>
+      </Extensions>
+      <Commands>
+        <Button id="ToolsCommand_Signin" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_Signin" message="The Google Maps Engine Sign in/out button allows you to authenticate with your Google Maps Engine account." caption="Sign-in" tip="Sign in or out of your Google Maps Engine account" category="Google Maps Engine Tools" onDemand="false" image="Images\private.png">
+          <Help heading="Heading">Content</Help>
+        </Button>
+        <!-- Find: Locate a private or public map service -->
+        <Button id="ToolsCommand_SectionFind" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_SectionFind" message="The find section holder is a placeholder, seperator for the toolbar and provides no functionality." caption="Find" tip="Browse and locate Google Maps Engine public and private content." category="Google Maps Engine Sections" onDemand="true" />
+        <Button id="ToolsCommand_FindAsset" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_FindAsset" message="Search and find a published Google Maps Engine map for viewing." caption="Search" tip="Search for a published Google Maps Engine map." category="Google Maps Engine Tools" onDemand="false" image="Images\search_16.png" />
+        <Button id="ToolsCommand_FindInMapGallery" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_FindInMapGallery" message="Find a Google Maps Engine public or private service in the Google Earth Gallery." caption="Open Earth Gallery" tip="Find a Google Maps Engine map in the Google Earth Gallery." category="Google Maps Engine Tools" onDemand="false" image="Images\thumbnail.png" />
+        <!-- View: Add to map, open in Google Maps, Google Earth, etc -->
+        <Button id="ToolsCommand_SectionView" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_SectionView" message="The view section holder is a placeholder, seperator for the toolbar and provides no functionality." caption="View" tip="Tools to view Google Maps Engine services on your map." category="Google Maps Engine Sections" onDemand="true" />
+        <Button id="ToolsCommand_AddSelectedToMap" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_AddSelectedToMap" message="Once you have selected a specific Google Maps Engine map, use this tool to add it to your map context." caption="Add Selected to your Map" tip="Add your selected Google Maps Engine service to your map." category="Google Maps Engine Tools" onDemand="false" image="Images\overlay.png" />
+        <Button id="ToolsCommand_ViewInMapsEngine" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_ViewInMapsEngine" message="Once you have selected a specific Google Maps Engine map, use this tool to open the map in Google Maps Engine." caption="Open selected in Google Maps Engine" tip="Open your selected Google Maps Engine service in the Gogle Maps Engine UI." category="Google Maps Engine Tools" onDemand="false" image="Images\maps_engine-16.png" />
+        <Button id="ToolsCommand_ViewSelectedInGoogleMaps" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_ViewSelectedInGoogleMaps" message="Once you have selected a specific Google Maps Engine map, use this tool to open it in Google Maps." caption="View selected in Google Maps" tip="Open your selected Google Maps Engine services in Google Maps." category="Google Maps Engine Tools" onDemand="false" image="Images\maps_16.png" />
+        <!-- Interact: Share, collaborate, modify Google Maps Engine maps -->
+        <Button id="ToolsCommand_SectionInteract" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_SectionInteract" message="The interact section holder is a placeholder, seperator for the toolbar and provides no functionality." caption="Interact" tip="Tools to interact with Google Maps Engine services within your map." category="Google Maps Engine Sections" onDemand="true" />
+        <Button id="ToolsCommand_UploadToGoogleMapsEngine" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_UploadToGoogleMapsEngine" message="Once you have selected a feature(s) (vector or raster), use this tool to upload it to your Google Maps Engine account." caption="Upload Selected to Google Maps Engine" tip="Interactively upload selected data to your Google Maps Engine Account." category="Google Maps Engine Tools" onDemand="false" image="Images\upload_item.png" />
+        <!-- Advanced Settings -->
+        <Button id="ToolsCommand_AdvancedSettings" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_AdvancedConnectionSettings" message="The advanced settings menu option allows you to configure the Google Maps Engine Add-in's configuration and connection settings." caption="Advanced Settings" tip="Advanced configuration and connection settings." category="Google Maps Engine Tools" />
+        <Button id="ToolsCommand_About" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_About" message="The about menu option provides a dialog of information about this Google Maps Engine Add-in: build date, version, etc." caption="About" tip="About the Google Maps Engine Add-in for ArcGIS" category="Google Maps Engine Tools" />
+        <Button id="ToolsCommand_CheckForUpdate" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_CheckForUpdate" message="Check online for any updates to the Google Maps Engine Add-in for ArcGIS." caption="Check for Updates" tip="Check for any updates this Add-in" category="Google Maps Engine Tools" />
+        <Button id="ToolsCommand_UserSignout" class="com.google.mapsengine.connectors.arcgis.Extension.Tools.ToolsCommand_UserSignout" message="Explicitly sign-out of your Google Maps Engine account." caption="Sign-out" tip="Explicitly sign-out of your Google Maps Engine account." category="Google Maps Engine Tools" onDemand="false" />
+      </Commands>
+      <Menus>
+        <Menu id="ToolsMenu_AdvancedSettings" caption="Settings" isRootMenu="true">
+          <Items>
+            <Button refID="ToolsCommand_UserSignout" />
+            <Button refID="ToolsCommand_AdvancedSettings" separator="true" />
+            <Button refID="ToolsCommand_CheckForUpdate" />
+            <Button refID="ToolsCommand_About" />
+          </Items>
+        </Menu>
+      </Menus>
+      <Toolbars>
+        <Toolbar id="ToolsToolbar_Toolbar" caption="Google Maps Engine Connector for ArcMap" showInitially="false">
+          <Items>
+            <Button refID="ToolsCommand_Signin" />
+            <Button refID="ToolsCommand_SectionFind" separator="true" />
+            <Button refID="ToolsCommand_FindAsset" />
+            <Button refID="ToolsCommand_FindInMapGallery" />
+            <Button refID="ToolsCommand_SectionView" separator="true" />
+            <Button refID="ToolsCommand_AddSelectedToMap" />
+            <Button refID="ToolsCommand_ViewInMapsEngine" />
+            <Button refID="ToolsCommand_ViewSelectedInGoogleMaps" />
+            <Button refID="ToolsCommand_SectionInteract" separator="true" />
+            <Button refID="ToolsCommand_UploadToGoogleMapsEngine" />
+            <Menu refID="ToolsMenu_AdvancedSettings" separator="true" />
+          </Items>
+        </Toolbar>
+      </Toolbars>
+    </ArcMap>
+  </AddIn>
+</ESRI.Configuration>

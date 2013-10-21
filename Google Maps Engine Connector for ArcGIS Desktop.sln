@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google Maps Engine Connector for ArcGIS Desktop", "Google Maps Engine Add-in for ArcGIS\Google Maps Engine Connector for ArcGIS Desktop.csproj", "{40B9D762-1C79-400E-BF92-E9CC5E6B6AED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40B9D762-1C79-400E-BF92-E9CC5E6B6AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B9D762-1C79-400E-BF92-E9CC5E6B6AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B9D762-1C79-400E-BF92-E9CC5E6B6AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B9D762-1C79-400E-BF92-E9CC5E6B6AED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.None
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="auth_tokenexchange_error_404" xml:space="preserve">
+    <value>Unable to exchange the OAuth 2.0 code for a valid access token.  Google Accounts (accounts.google.com) have responded with an error.  Please sign out of the tools and attempt to sign-in again to clear-up the discrepency.</value>
+  </data>
+  <data name="ExtensionTitle" xml:space="preserve">
+    <value>Google Maps Engine for ArcGIS</value>
+    <comment>The title of the Google Maps Engine for ArcMap extension</comment>
+  </data>
+  <data name="auth_tokenexchange_error_unknown" xml:space="preserve">
+    <value>An unknown error occured while attempting to exchange the OAuth 2.0 code for a valid access token.</value>
+  </data>
+  <data name="auth_clearToken_error_unknown" xml:space="preserve">
+    <value />
+  </data>
+  <data name="auth_decodeTitleResponse_error_unknown" xml:space="preserve">
+    <value>Unable to decode OAuth 2.0 title from accounts.google.com</value>
+  </data>
+  <data name="auth_getToken_error_unknown" xml:space="preserve">
+    <value>An unknown error occured while attempting to retrieve your stored OAuth 2.0 state.  Please attempt sign-out and re-authenticate to resolve the issue.</value>
+  </data>
+  <data name="auth_refreshexchange_error_404" xml:space="preserve">
+    <value />
+  </data>
+  <data name="auth_refreshexchange_error_unknown" xml:space="preserve">
+    <value />
+  </data>
+  <data name="auth_refreshToken_error_tokendoesntexist" xml:space="preserve">
+    <value>The user does not have a valid OAuth2 Code.  Authentication settings have been cleared, restart and try again.</value>
+  </data>
+  <data name="auth_setToken_error_unknown" xml:space="preserve">
+    <value>An unknown error occured while attempting to save your OAuth 2.0 state.</value>
+  </data>
+  <data name="fgdb_GeodatabaseUtilities_createFileGeodatabaseWorkspace_exists" xml:space="preserve">
+    <value>Unable to create workspace, the temporary File Geodatabase (FGB) already exists.</value>
+  </data>
+  <data name="fgdb_GeodatabaseUtilities_deleteFileGeodatabaseWorkspace_notfound" xml:space="preserve">
+    <value>Unable to delete the referenced File Geodatabase. Does not exist.</value>
+  </data>
+  <data name="fgdb_GeodatabaseUtilities_deleteFileGeodatabaseWorkspace_unknown" xml:space="preserve">
+    <value>An unknown error occured, unable to delete the local File Geodatabase (FGDB).</value>
+  </data>
+  <data name="fgdb_GeodatabaseUtilities_openFileGeodatabaseWorkspace_notfound" xml:space="preserve">
+    <value>Unable to open referenced File Geodatabase.  Does not exist.</value>
+  </data>
+  <data name="fgdb_GeodatabaseUtilities_openFileGeodatabaseWorkspace_unknown" xml:space="preserve">
+    <value>An unknown exception occured.  Unable to open the referenced File Geodatabase.</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_btnAdd_Text" xml:space="preserve">
+    <value>Add Selected to Map</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_btnCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_btnSearch_Text" xml:space="preserve">
+    <value>Map Search</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_customerId_HeaderText" xml:space="preserve">
+    <value>Project Id</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_customerId_ToolTipText" xml:space="preserve">
+    <value>The Google Maps Engine project identifier (cid=).</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapDescription_HeaderText" xml:space="preserve">
+    <value>Map Description</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapDescription_ToolTipText" xml:space="preserve">
+    <value>The publisher defined description of the map.</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapId_HeaderText" xml:space="preserve">
+    <value>MapId</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapId_ToolTipText" xml:space="preserve">
+    <value>The project unique map identifier.</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapName_HeaderText" xml:space="preserve">
+    <value>Map Name</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_DataGrid_MapName_ToolTipText" xml:space="preserve">
+    <value>The publisher defined name of the map.</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_txtSearchSummaryTemplate" xml:space="preserve">
+    <value>Searching across {numProjects} Google Maps Engine projects</value>
+  </data>
+  <data name="dialog_GoogleMapsEngineDirectoryListing_btnAdd_Click_unknownerror" xml:space="preserve">
+    <value>An error has occured and the Google Maps Engine map has not be added to your ArcMap.</value>
+  </data>
+  <data name="GeodatabaseUtilities_createGoogleMapsEngineCatalogFeatureClass_unabletoopen" xml:space="preserve">
+    <value>Unable to open Feature Class.</value>
+  </data>
+  <data name="GeodatabaseUtilities_createGoogleMapsEngineCatalogFeatureClass_unknownexception" xml:space="preserve">
+    <value>An unknown exception has occured while creating a new Feature Class.</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetDescription_AliasName" xml:space="preserve">
+    <value>Resource Description</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetDescription_Name" xml:space="preserve">
+    <value>ResourceDescription</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetId_AliasName" xml:space="preserve">
+    <value>Resource Identifier</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetId_Name" xml:space="preserve">
+    <value>ResourceId</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetName_AliasName" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetName_Name" xml:space="preserve">
+    <value>ResourceName</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetType_AliasName" xml:space="preserve">
+    <value>Resource Type</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_AssetType_Name" xml:space="preserve">
+    <value>ResourceType</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_CustomerId_AliasName" xml:space="preserve">
+    <value>Project Identifier</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_CustomerId_Name" xml:space="preserve">
+    <value>ProjectId</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_FeatureClassName" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_LayerType_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_LayerType_ImageLayer" xml:space="preserve">
+    <value>Image Layer</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_LayerType_VectorLayer" xml:space="preserve">
+    <value>Vector Layer</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_MapAssetId_AliasName" xml:space="preserve">
+    <value>Map Resource Identifier</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_MapAssetId_Name" xml:space="preserve">
+    <value>MapId</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_MapSharedWith_AliasName" xml:space="preserve">
+    <value>Map Shared With</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_MapSharedWith_Name" xml:space="preserve">
+    <value>MapSharedWith</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_OBJECTID_AliasName" xml:space="preserve">
+    <value>OBJECTID</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_OBJECTID_Name" xml:space="preserve">
+    <value>OBJECTID</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_ParentAssetId_AliasName" xml:space="preserve">
+    <value>Parent Resource Identifier</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_ParentAssetId_Name" xml:space="preserve">
+    <value>ParentResourceId</value>
+  </data>
+  <data name="GoogleMapsEngineAPI_webrequest_unknownexception" xml:space="preserve">
+    <value>An unknown exception has occured. Unable to make web request.</value>
+  </data>
+  <data name="GoogleMapsEngineAPI_getProjects_unknownexception" xml:space="preserve">
+    <value>Unable to retrieve a list of projects.</value>
+  </data>
+  <data name="GoogleMapsEngineAPI_getMaps_unknownexception" xml:space="preserve">
+    <value>Unable to retrieve a list of maps.</value>
+  </data>
+  <data name="GeodatabaseUtilities_schema_LayerName" xml:space="preserve">
+    <value>Google Maps Engine Asset Catalog</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="about_dialog_html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\about_dialog_html.html;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="gme_logo_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\gme_logo_transparent.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="upload_dialog_html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\upload_dialog_html.html;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+</root>

@@ -1,0 +1,4 @@
+﻿License: None
+Copyright (c) 2013 Google Inc
+
+All image files contained in the /Images/ folder are copyright Google.

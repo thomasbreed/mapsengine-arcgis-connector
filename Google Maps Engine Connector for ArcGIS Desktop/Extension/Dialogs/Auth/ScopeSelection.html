@@ -1,0 +1,102 @@
+﻿<html>
+<head>
+    <title>Scope Selection</title>
+    <style>
+        body
+        {
+            background-color: #E0E0E0;
+        }
+        html, body
+        {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body
+        {
+        }
+        .promptmessage
+        {
+            padding-top: 15px;
+            font-size: 13px;
+            font-family: Arial;
+        }
+        .promptmessagetitle
+        {
+            font-size: 16px;
+            font-family: Arial;
+        }
+        #myoutercontainer
+        {
+            position: relative;
+            height: 100%;
+        }
+        #myinnercontainer
+        {
+            position: absolute;
+            top: 30%;
+            height: 10em;
+            margin-top: -5em;
+            margin-left: 100px;
+            width: 60%;
+        }
+    </style>
+    <script type="text/javascript">
+        function scopeSelectionComplete() {
+            // determine the user type
+            var userType = "";
+
+            // retrieve the radio buttons
+            var radios = document.getElementsByName('scope');
+
+            // go through each radio button to find selected
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    // update the user type with the value of the checked rb
+                    userType = radios[i].value;
+
+                    break;
+                }
+            }
+
+            // call the external function to pass in the user type
+            window.external.HandleScopeSelectionCompleted(userType);
+        }
+    </script>
+</head>
+<body>
+    <div id="myoutercontainer">
+        <div id="myinnercontainer">
+            <div>
+                <img class="logo" src="https://mapsengine.google.com/static/images/me_product_logo.png" />
+                <div class="promptmessagetitle promptmessage">
+                    What type of user are you?
+                </div>
+                <div class="promptmessage">
+                    <table id="scopeselection" style="width: 100%">
+                        <tr>
+                            <td style="text-align: center;">
+                                <img src="mapviewer.png" alt="Map Viewer" />
+                            </td>
+                            <td style="text-align: center;">
+                                <img src="mapeditor.png" alt="Map Editor" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">
+                                <input id="RadioMapViewer" checked="checked" name="scope" type="radio" value="mapviewer" />Map
+                                Viewer
+                            </td>
+                            <td style="text-align: center;">
+                                <input id="RadioMapEditor" name="scope" type="radio" value="mapeditor" />Map Editor
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="text-align: right">
+                        <input id="ButtonNext" type="button" value="Next" onclick="scopeSelectionComplete();" /></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
