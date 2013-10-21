@@ -26,15 +26,14 @@ Overview of the Tools
 ---------------------
 | Tool | Desciption |
 | ---- | ---------- |
-| ![Sign In](/Images/private-16.png) | Sign in or out of your Maps Engine Account. |
-| ![Search](/Images/search-16.png) | Search for a map from a Google Maps Engine account. Once you select a map and click OK, a bounding box layer is added to the QGIS canvas.* |
-| ![Search in Gallery](/Images/gallery-16.png) | Search for a Google Maps Engine map in the Google Earth Gallery.* |
-| ![WMS](/Images/overlay-16.png) | View a layer from the selected map as a WMS overlay in QGIS. ** |
-| ![View in GME](/Images/maps_engine-16.png) | View the selected map or layer in Google Maps Engine in a new browser tab. ** |
-| ![View in Google Maps](/Images/maps-16.png) | View the selected map in a Google Maps viewer in a new browser tab. The url includes a short-lived access token allowing access to private maps. ** |
-| ![Copy to clipboard](/Images/link-16.png) | Copy the link to the WMS service url to clipboard. The url includes a short-lived access token allowing access to private maps. ** |
-| ![Upload](/Images/upload_item-16.png) | Upload the selected vector or raster layer to Google Maps Engine. *** |
-| More | Access *Advanced Settings* and *About dialog*. |
+| ![Sign In](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/private.png) | Sign in or out of your Maps Engine Account. |
+| ![Search](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/search_16.png) | Search for a map from a Google Maps Engine account. Once you select a map and click OK, a bounding box layer is added to the ArcMap session.* |
+| ![Search in Gallery](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/thumbnail.png) | Search for a Google Maps Engine map in the Google Earth Gallery.* |
+| ![WMS](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/overlay.png) | View a layer from the selected map as a WMS overlay in ArcMap. ** |
+| ![View in GME](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/maps_engine-16.png) | View the selected map or layer in Google Maps Engine in a new browser tab. ** |
+| ![View in Google Maps](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/maps_16.png) | View the selected map in a Google Maps viewer in a new browser tab. The url includes a short-lived access token allowing access to private maps. ** |
+| ![Upload](https://raw.github.com/googlemaps/mapsengine-arcgis-connector/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop/Images/upload_item.png) | Upload the selected vector or raster layer to Google Maps Engine. *** |
+| Settings | Access *Advanced Settings* and *About dialog*. |
 
 \* *Enabled after a successful login*.
 
