@@ -2,7 +2,7 @@
   <Name>Google Maps Engine Connector for ArcGIS Desktop</Name>
   <AddInID>{8d51bcaf-09d5-4dbc-a611-c0646933de50}</AddInID>
   <Description>The Google Maps Engine connector for ArcGIS Desktop provides a suite of tools to enable ArcMap users to view, interact, and manage Google Maps Engine services.</Description>
-  <Version>1.0</Version>
+  <Version>1.1</Version>
   <Image>Images\Google Maps Engine Add-in for ArcGIS.png</Image>
   <Author>The Google Maps Engine Team</Author>
   <Company>Google</Company>

@@ -153,10 +153,6 @@ namespace com.google.mapsengine.connectors.arcgis
             log.Debug("Raising an extension event for those who are listensing.");
             OnRaiseExtensionStateChangeEvent(new Extension.StateChangeEventArgs(isExtensionEnabled()));
 
-            // initialize ArcMap event listeners
-            log.Debug("Initializing ArcMap event handlers.");
-            InitializeArcMap();
-
             // wire up ArcMap events and begin to listen to them
             log.Debug("Wiring up ArcMap document events.");
             ArcMap.Events.NewDocument += InitializeArcMap;
