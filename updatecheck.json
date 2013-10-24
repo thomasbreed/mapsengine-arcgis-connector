@@ -8,7 +8,7 @@
             "version":"10.0"
          },
          "AddinInstallationURL":"https://github.com/googlemaps/mapsengine-arcgis-connector/blob/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop.esriAddIn?raw=true",
-         "AddinInstallationVersion":"1.0.0.0"
+         "AddinInstallationVersion":"1.1.0.0"
       }
    ]
 }
