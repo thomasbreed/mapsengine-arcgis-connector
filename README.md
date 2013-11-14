@@ -19,7 +19,7 @@ http://www.google.com/enterprise/earthmaps/legal/us/gme_tssg.html).
 
 Installation
 ------------
-To install the Google Maps Engine Connector for ArcGIS Desktop(tm), download the <a href="https://github.com/googlemaps/mapsengine-arcgis-connector/blob/master/Google%20Maps%20Engine%20Connector%20for%20ArcGIS%20Desktop.esriAddIn?raw=true">Google Maps Engine Connector for ArcGIS Desktop.esriAddin</a> file to a local Windows machine running ArcGIS Desktop 10.0, 10.1, or 10.2.  Click on the .esriAddin file to install the addon.  Once installed, open ArcMap and enable the Google Maps Engine Connector for ArcGIS Desktop extension from the menu.
+To install the Google Maps Engine Connector for ArcGIS Desktop(tm), download the <a href="http://www.arcgis.com/home/item.html?id=a8895908f98d4334b401de9b6d08e847">Google Maps Engine Connector for ArcGIS Desktop.esriAddin</a> file (from arcgis.com) to a local Windows machine running ArcGIS Desktop 10.0, 10.1, or 10.2.  Click on the .esriAddin file to install the addon.  Once installed, open ArcMap and enable the Google Maps Engine Connector for ArcGIS Desktop extension from the menu.
 
 
 Overview of the Tools
