@@ -192,7 +192,7 @@ namespace com.google.mapsengine.connectors.arcgis
 
             // wire up ArcMap events and stop listening to them
             log.Debug("Un-wiring up ArcMap document events.");
-            ArcMap.Events.NewDocument -= InitializeArcMap;
+            ArcMap.Events.NewDocument += InitializeArcMap;
             ArcMap.Events.OpenDocument -= InitializeArcMap;
             
             // set the map and extension to null to clear up
@@ -320,7 +320,7 @@ namespace com.google.mapsengine.connectors.arcgis
             this.token = null;
 
             // raise an Authentication event
-            OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(false, true, null));
+            OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(false, null));
 
             // raise a selection state change event too, for buttons dependent on selection
             OnRaiseSelectionChangeEvent(new Extension.SelectionChangeEventArgs(false));
@@ -707,12 +707,12 @@ namespace com.google.mapsengine.connectors.arcgis
             }
         }
 
-        internal void publishRaiseAuthenticationStateChangeEvent(bool isAuthorized, bool isViewOnly, Extension.Auth.OAuth2Token token)
+        internal void publishRaiseAuthenticationStateChangeEvent(bool isAuthorized, Extension.Auth.OAuth2Token token)
         {
             if(isAuthorized)
-                OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(isAuthorized, isViewOnly, token));
+                OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(isAuthorized, token));
             else
-                OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(isAuthorized, isViewOnly));
+                OnRaiseAuthenticationStateChangeEvent(new Extension.Auth.AuthenticationStateChangeEventArgs(isAuthorized));
         }
 
         internal void publishRaiseProjectFilterChangeEvent(bool isFilterApplied, String projectId)
@@ -731,6 +731,61 @@ namespace com.google.mapsengine.connectors.arcgis
         internal void publishRaiseDownloadProgressChangeEvent(bool isLayerSelected)
         {
             OnRaiseMapLayerStateChangeEvent(new Extension.MapLayerStateChangeEventArgs(isLayerSelected));
+        }
+
+        internal void publishRaiseMapLayerStateChangeEvent(bool isItemSelected)
+        {
+            OnRaiseMapLayerStateChangeEvent(new Extension.MapLayerStateChangeEventArgs(isItemSelected));
+        }
+
+        internal void removeLayerByName(String datasetName, String workspacePathName)
+        {
+            if (m_map.LayerCount > 0)
+            {
+                // go through each layer in the Table of Contents
+                for (int i = 0; i < m_map.LayerCount; i++)
+                {
+                    // get the layer
+                    ILayer layer = m_map.get_Layer(i);
+                    
+                    // get the data layer of this feature layer
+                    ESRI.ArcGIS.Carto.IDataLayer2 dataLayer
+                        = (ESRI.ArcGIS.Carto.IDataLayer2)layer;
+                    ESRI.ArcGIS.Geodatabase.IDatasetName layerDatasetName
+                        = (ESRI.ArcGIS.Geodatabase.IDatasetName)dataLayer.DataSourceName;
+
+                    // create two workspace directory info objects to compare
+                    System.IO.DirectoryInfo layerWorkspaceDir 
+                        = new DirectoryInfo(layerDatasetName.WorkspaceName.PathName);
+                    System.IO.DirectoryInfo requestedWorkspaceDir 
+                        = new DirectoryInfo(workspacePathName);
+
+                    // compare the layer name and workspace
+                    if (String.Compare(layerDatasetName.Name, 
+                            datasetName, 
+                            StringComparison.InvariantCultureIgnoreCase) == 0
+                        && layerWorkspaceDir.Exists
+                        && requestedWorkspaceDir.Exists
+                        && String.Compare(layerWorkspaceDir.FullName.TrimEnd('\\'),
+                            requestedWorkspaceDir.FullName.TrimEnd('\\'), 
+                            StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        // delete the layer
+                        m_map.DeleteLayer(layer);
+
+                        // remove reference to layer name objects
+                        layerDatasetName = null;
+                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(dataLayer);
+                        dataLayer = null;
+
+                        // release the layer object
+                        System.Runtime.InteropServices.Marshal.FinalReleaseComObject(layer);
+                        layer = null;
+
+                        return;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -753,6 +808,9 @@ namespace com.google.mapsengine.connectors.arcgis
             // Update the UI
             log.Debug("Setting a reference to this ArcMap session.");
             m_map = ArcMap.Document.FocusMap;
+
+            // Propogate a map layer state change to update buttons accordingly
+            publishRaiseMapLayerStateChangeEvent(false);
         }
 
         private void UninitializeArcMap()
@@ -810,11 +868,11 @@ namespace com.google.mapsengine.connectors.arcgis
         {
             if (m_map.LayerCount > 0)
             {
-                OnRaiseMapLayerStateChangeEvent(new Extension.MapLayerStateChangeEventArgs(true));
+                publishRaiseMapLayerStateChangeEvent(true);
             }
             else
             {
-                OnRaiseMapLayerStateChangeEvent(new Extension.MapLayerStateChangeEventArgs(false));
+                publishRaiseMapLayerStateChangeEvent(false);
             }
         }
         #endregion

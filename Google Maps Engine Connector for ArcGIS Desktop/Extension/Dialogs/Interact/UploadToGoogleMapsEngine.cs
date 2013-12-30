@@ -32,6 +32,7 @@ using ESRI.ArcGIS.Desktop.AddIns;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.DataSourcesFile;
 using ESRI.ArcGIS.GISClient;
+using ESRI.ArcGIS.Geoprocessor;
 
 namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 {
@@ -45,6 +46,9 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
         // create a boolean to track if the layer is valid
         Boolean isLayerValidated = false;
+
+        // create an object to track what type of dataset is being uploaded
+        String uploadType = "vector";
 
         public UploadToGoogleMapsEngine(ref GoogleMapsEngineToolsExtensionForArcGIS ext)
         {
@@ -101,6 +105,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
                 // create a new GeoProcessor
                 ESRI.ArcGIS.Geoprocessor.Geoprocessor geoprocessor = new ESRI.ArcGIS.Geoprocessor.Geoprocessor();
+                geoprocessor.TemporaryMapLayers = true;
 
                 // execute the FeatureClassToFeatureClass
                 geoprocessor.Execute(fc2fc, null);
@@ -113,6 +118,10 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
                 // execute the FeatureClassToFeatureClass
                 geoprocessor.Execute(saveToLayerFile, null);
+
+                // remove reference to the tool and geoprocessor
+                fc2fc = null;
+                geoprocessor = null;
             }
             catch (Exception ex)
             {
@@ -153,7 +162,8 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                 raster2raster.out_rasterdataset = outputFilePath + "\\" + name + ".tif";
 
                 // create a new GeoProcessor
-                ESRI.ArcGIS.Geoprocessor.Geoprocessor geoprocessor = new ESRI.ArcGIS.Geoprocessor.Geoprocessor();
+                Geoprocessor geoprocessor = new Geoprocessor();
+                geoprocessor.TemporaryMapLayers = true;
 
                 // execute the RasterToOtherFormat
                 geoprocessor.Execute(raster2raster, null);
@@ -200,6 +210,9 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
                 // set the source vector type
                 uploadhtml = uploadhtml.Replace("{sourcetype}", featureLayer.DataSourceType);
+
+                // set the variable upload type to vector
+                uploadType = "vector";
             } 
             else if (selectedLayer is ESRI.ArcGIS.Carto.IRasterLayer)
             {
@@ -211,6 +224,9 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                 uploadhtml = uploadhtml.Replace("{sourcetype}", "Raster: "
                     + rasterLayer.RowCount + " rows, "  + rasterLayer.ColumnCount + " columns, " 
                     + rasterLayer.BandCount + " bands");
+
+                // set the variable upload type to raster
+                uploadType = "raster";
             }
 
             // set the upload html
@@ -218,7 +234,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
             this.webBrowser.DocumentText = uploadhtml;
         }
 
-        protected void uploadButtonClicked(String projectId, String name, String description, String tags, String aclName, String attribution)
+        protected void uploadButtonClicked(String projectId, String name, String description, String tags, String draftAccessList, String attribution, String acquisitionTime, String maskType)
         {
             try
             {
@@ -230,7 +246,8 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                 if (isLayerValidated
                     && projectId != null && projectId.Length > 0
                     && name != null && name.Length > 0
-                    && aclName != null && aclName.Length > 0)
+                    && draftAccessList != null && draftAccessList.Length > 0
+                    && uploadType.Equals("vector") || (uploadType.Equals("raster") && attribution != null && attribution.Length > 0))
                 {
                     // show the processing dialog
                     processingDialog.Show();
@@ -272,7 +289,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                             MapsEngine.API.GoogleMapsEngineAPI.AssetType.table,
                             projectId,
                             name,
-                            aclName,
+                            draftAccessList,
                             filesNames,
                             description,
                             tags.Split(",".ToCharArray()).ToList<String>(),
@@ -291,7 +308,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                         // export a copy of the raster to a format that can be uploaded
                         // raise a processing notification
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Extracting a copy of '" + selectedLayer.Name + "' (raster) for data upload.");
-                        ExportLayerToUploadableRaster(tempDir.FullName, tempDir.Name, selectedLayer);
+                        ExportLayerToUploadableRaster(tempDir.FullName, selectedLayer.Name, selectedLayer);
 
                         processingDialog.Update();
                         processingDialog.Focus();
@@ -308,11 +325,13 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                             = api.createRasterAssetForUploading(ext.getToken(),
                             projectId,
                             name,
-                            aclName,
+                            draftAccessList,
                             attribution, // attribution
                             filesNames,
                             description,
-                            tags.Split(",".ToCharArray()).ToList<String>());
+                            tags.Split(",".ToCharArray()).ToList<String>(),
+                            acquisitionTime,
+                            maskType);
 
                         // Initiate upload of file(s)
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Starting to upload files...");
@@ -323,10 +342,26 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                         System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid="+ projectId +"&v=DETAIL_INFO&aid=" + uploadingAsset.id);
                     }
 
-                    // Delete temporary directory and containing files
-                    // TODO: Remove temporary files, but can't remove them at the moment because they are in use by 
-                    // the ArcMap seesion.
-                    //tempDir.Delete(true);
+                    // Ask the user if the temporary files should be deleted
+                    DialogResult dialogResult = MessageBox.Show(
+                        String.Format(Properties.Resources.dialog_dataUpload_tempFileCleanupMessage,
+                            tempDir.GetFiles().Count(), tempDir.FullName),
+                        ext.getAddinName() + " Temporary File Clean-up", 
+                        MessageBoxButtons.YesNo);
+
+                    // if the user wishes to delete the temporary files, delete them
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            // remove the temporary layer from the ArcMap session
+                            ext.removeLayerByName((uploadType.Equals("vector") ? selectedLayer.Name : selectedLayer.Name + ".tif"), tempDir.FullName);
+
+                            // Delete temporary directory and containing files
+                            tempDir.Delete(true);
+                        }
+                        catch (Exception) { }
+                    }
 
                     // close the processing dialog
                     ext.publishRaiseDownloadProgressChangeEvent(true, "Finished");
@@ -370,10 +405,10 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
             }
 
             // This method can be called from JavaScript.
-            public void handleUploadClickEvent(String projectId, String name, String description, String tags, String aclName, String attribution)
+            public void handleUploadClickEvent(String projectId, String name, String description, String tags, String draftAccessList, String attribution, String acquisitionTime, String maskType)
             {
                 // Call a method on the form.
-                mForm.uploadButtonClicked(projectId, name, description, tags, aclName, attribution);
+                mForm.uploadButtonClicked(projectId, name, description, tags, draftAccessList, attribution, acquisitionTime, maskType);
             }
 
             // This method can be called from JavaScript.
@@ -387,10 +422,11 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
         private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             // create an object array to house the required parameters
-            System.Object[] o = new System.Object[3];
+            System.Object[] o = new System.Object[4];
             o[0] = (System.Object)Properties.Settings.Default.oauth2_settings_clientId; // projectId
             o[1] = (System.Object)Properties.Settings.Default.gme_api_key; // projectKey
             o[2] = (System.Object)ext.getToken().access_token; // access_token
+            o[3] = (System.Object)uploadType; // dataset upload type
 
             // call the JavaScript setConfiguration function to set API info
             webBrowser.Document.InvokeScript("setConfiguration", o);

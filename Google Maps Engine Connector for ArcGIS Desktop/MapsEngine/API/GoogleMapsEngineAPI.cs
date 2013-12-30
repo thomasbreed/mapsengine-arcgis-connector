@@ -570,7 +570,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
          * Makes a request to the Google Maps Engine API to generate a new vector table
          * then, returns a reference identifier
          */
-        public UploadingAsset createVectorTableAssetForUploading(Extension.Auth.OAuth2Token token, AssetType assetType, String projectId, String name, String sharedAccessList, List<String> fileNames, String description, List<String> tags, String encoding)
+        public UploadingAsset createVectorTableAssetForUploading(Extension.Auth.OAuth2Token token, AssetType assetType, String projectId, String name, String draftAccessList, List<String> fileNames, String description, List<String> tags, String encoding)
         {
             // attempt to call the GME API to make a new vector table reference
             try
@@ -582,7 +582,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     String RequestUrl = GME_API_PROTOCOL
                         + "://" + GME_API_DOMAIN
                         + "/" + GME_API_SERVICE
-                        + "/" + Properties.Settings.Default.gme_api_version_createTT
+                        + "/" + Properties.Settings.Default.gme_api_version
                         + "/" + "tables"
                         + "/" + "upload"
                         + "?" + "projectId=" + projectId
@@ -590,7 +590,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     log.Debug("Request Url: " + RequestUrl);
 
                     // serialize the requestAsset into json
-                    String payload = JsonConvert.SerializeObject(new UploadableVectorTableAsset(name, description, fileNames, sharedAccessList, encoding, tags));
+                    String payload = JsonConvert.SerializeObject(new UploadableVectorTableAsset(projectId, name, description, fileNames, draftAccessList, encoding, tags));
 
                     // make the post request, get json response
                     String jsonResponse = makeGoogleMapsEnginePostRequest(RequestUrl, token.access_token, payload);
@@ -616,7 +616,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
          * Makes a request to Google Maps Engine API to generate a new raster asset
          * then, returns a reference identifier
          */
-        public UploadingAsset createRasterAssetForUploading(Extension.Auth.OAuth2Token token, String projectId, String name, String sharedAccessList, String attribution, List<String> fileNames, String description, List<String> tags)
+        public UploadingAsset createRasterAssetForUploading(Extension.Auth.OAuth2Token token, String projectId, String name, String draftAccessList, String attribution, List<String> fileNames, String description, List<String> tags, String acquisitionTime, String maskType)
         {
             // attempt to call the GME API to make a raster reference
             try
@@ -626,7 +626,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                 String RequestUrl = GME_API_PROTOCOL
                     + "://" + GME_API_DOMAIN
                     + "/" + GME_API_SERVICE
-                    + "/" + Properties.Settings.Default.gme_api_version_createTT
+                    + "/" + Properties.Settings.Default.gme_api_version
                     + "/" + "rasters"
                     + "/" + "upload"
                     + "?" + "projectId=" + projectId
@@ -634,7 +634,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                 log.Debug("Request Url: " + RequestUrl);
 
                 // serialize the requestAsset into json
-                String payload = JsonConvert.SerializeObject(new UploadableRasterAsset(name, description, fileNames, sharedAccessList, attribution, tags));
+                String payload = JsonConvert.SerializeObject(new UploadableRasterAsset(projectId, name, description, fileNames, draftAccessList, attribution, tags, acquisitionTime, maskType));
 
                 // make the post request, get json response
                 String jsonResponse = makeGoogleMapsEnginePostRequest(RequestUrl, token.access_token, payload);

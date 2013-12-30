@@ -37,42 +37,15 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
             // initialize and configure log4net, reading from Xml .config file
             log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
 
-            log.Info("ToolsCommand_UploadToGoogleEarthBuilder initializing.");
+            log.Info("ToolsCommand_UploadToGoogleMapsEngine initializing.");
 
             // to check the state of the extension, get the extension
             log.Info("Retrieving a reference to the extension object to check state.");
             ext = GoogleMapsEngineToolsExtensionForArcGIS.GetExtension();
 
-            // check to see if the extension is enabled
-            log.Debug("Verifying extension is enabled.");
-            if (ext.isExtensionEnabled())
-            {
-                // the extension is enabled, verify the button is also enabled
-                log.Debug("Extension is enabled, enable button and check to verify the user has an auth token.");
-                this.Enabled = true;
-
-                // check to see if the user has an auth code
-                log.Debug("Checking to see if the user has an OAuth code");
-                if (ext.isAuthorizationAvailable() && !ext.getToken().isViewOnly
-                    && ext.hasAtLeastOneLayer())
-                {
-                    // the user has an OAuth code available for use
-                    log.Debug("User has an OAuth code available. Check the button.");
-                    this.Enabled = true;
-                }
-                else
-                {
-                    // the user does not have an OAuth code available for use
-                    log.Debug("User does not have an OAuth code available. Uncheck the button.");
-                    this.Enabled = false;
-                }
-            }
-            else
-            {
-                // disable this button
-                log.Debug("The extension is disabled, disable this button.");
-                this.Enabled = false;
-            }
+            // Verify the button is also disabled by default
+            log.Debug("Disable button by default.");
+            this.Enabled = false;
 
             // subscribe to extension state change events through the extension
             ext.RaiseExtensionStateChangeEvent += HandleExtensionStateChange;
@@ -88,13 +61,12 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
         {
             // check to see if the extension is enabled
             log.Debug("Verifying extension is enabled.");
-            if (e.State
-                && ext.isAuthorizationAvailable() && !ext.getToken().isViewOnly
+            if (e.State && ext.isAuthorizationAvailable()
                 && ext.hasAtLeastOneLayer())
             {
                 // the extension is enabled, verify the button is also enabled
                 log.Debug("Extension is enabled, enable button and check to verify the user has an auth token.");
-                this.Enabled = false;
+                this.Enabled = true;
             }
             else
             {
@@ -107,10 +79,12 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
         void HandleAuthenticationStateChangeEvent(object sender, Extension.Auth.AuthenticationStateChangeEventArgs e)
         {
             // an authentication event occured, determine which one and act accordingly
-            if (e.isAuthorized && !e.isViewOnly && ext.hasAtLeastOneLayer())
+            if (e.isAuthorized && ext.isExtensionEnabled() 
+                && ext.hasAtLeastOneLayer())
             {
-                // suppress/check the button
-                this.Enabled = false;
+                // the user is authorized, verify the button is also enabled
+                log.Debug("Extension is enabled, enable button and check to verify the user has an auth token.");
+                this.Enabled = true;
             }
             else
             {
@@ -123,8 +97,8 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
         {
             // check to see if the extension is enabled
             log.Debug("Verifying extension is enabled.");
-            if (e.isLayerSelected && ext.isExtensionEnabled() 
-                && ext.isAuthorizationAvailable() && !ext.getToken().isViewOnly)
+            if (ext.isExtensionEnabled() && ext.isAuthorizationAvailable() 
+                && ext.hasAtLeastOneLayer())
             {
                 // the extension is enabled, verify the button is also enabled
                 log.Debug("Extension is enabled, enable button and check to verify the user has an auth token.");

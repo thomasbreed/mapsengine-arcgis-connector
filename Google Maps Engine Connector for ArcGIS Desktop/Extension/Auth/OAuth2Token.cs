@@ -52,10 +52,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
         // that can be used to refresh the short lived access token
         private string _refresh_token;
 
-        // a boolean to track if read only scopes were used to generate
-        // this OAuth 2.0 token
-        private bool _isViewOnly;
-
         #endregion
 
         // default constructor used to build a new OAuth 2.0 token
@@ -110,13 +106,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
         {
             get { return this._refresh_token; }
             set { this._refresh_token = value; }
-        }
-
-        // a getter/setter function to access the is view only
-        public bool isViewOnly
-        {
-            get { return this._isViewOnly; }
-            set { this._isViewOnly = value; }
         }
 
         #endregion

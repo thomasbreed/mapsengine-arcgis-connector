@@ -63,10 +63,6 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
-        ///&lt;!--
-        ///  Copyright 2013 Google Inc. All Rights Reserved.
-        ///  Author: alanpoole@google.com (Alan Poole)
-        ///--&gt;
         ///  &lt;head&gt;
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
@@ -79,7 +75,13 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         ///
         ///      body {
         ///          font-family: arial, sans-serif;
-        ///          font-size: 1 [rest of string was truncated]&quot;;.
+        ///          font-size: 13px;
+        ///          line-height: 18px;
+        ///      }
+        ///
+        ///      a {
+        ///        color: #1155cc;
+        ///        text-decoration: [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string about_dialog_html {
             get {
@@ -165,6 +167,15 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         internal static string auth_tokenexchange_error_unknown {
             get {
                 return ResourceManager.GetString("auth_tokenexchange_error_unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A temporary copy of the selected dataset was created during the upload process.  Would you like to perminately delete the {0} temporary files in the {1} directory?.
+        /// </summary>
+        internal static string dialog_dataUpload_tempFileCleanupMessage {
+            get {
+                return ResourceManager.GetString("dialog_dataUpload_tempFileCleanupMessage", resourceCulture);
             }
         }
         
@@ -602,41 +613,6 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
         ///&lt;head&gt;
-        ///    &lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;
-        ///    &lt;style type=&quot;text/css&quot;&gt;
-        ///        html
-        ///        {
-        ///            height: 100%;
-        ///        }
-        ///        
-        ///        body
-        ///        {
-        ///            height: 100%;
-        ///            margin: 0;
-        ///            padding: 0;
-        ///        }
-        ///        
-        ///        #map_canvas
-        ///        {
-        ///            height: 100%;
-        ///        }
-        ///    &lt;/style&gt;
-        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;https://maps.googleapis.com/maps/api/js?key=AIzaSyDNY9Z [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string share_google_plus {
-            get {
-                return ResourceManager.GetString("share_google_plus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-        ///&lt;html&gt;
-        ///&lt;!--
-        ///  Copyright 2013 Google Inc. All Rights Reserved.
-        ///  Author: alanpoole@google.com (Alan Poole)
-        ///--&gt;
-        ///  &lt;head&gt;
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
         ///    &lt;title&gt;Google Maps Engine Connectors ToS&lt;/title&gt;
@@ -648,7 +624,13 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         ///
         ///      body {
         ///          font-family: arial, sans-serif;
-        ///          font-size: 1 [rest of string was truncated]&quot;;.
+        ///          font-size: 13px;
+        ///          line-height: 18px;
+        ///      }
+        ///
+        ///      a {
+        ///        color: #1155cc;
+        ///        text-decoration: n [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string upload_dialog_html {
             get {

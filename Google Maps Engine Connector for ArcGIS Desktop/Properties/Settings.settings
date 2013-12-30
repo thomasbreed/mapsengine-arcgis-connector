@@ -1,12 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="com.google.geo.mapsengine.interop.arcgis.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="com.google.mapsengine.connectors.arcgis.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="oauth2_settings_client_secret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)"></Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="oauth2_settings_clientId" Type="System.String" Scope="Application">
-      <Value Profile="(Default)"></Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="oauth2_settings_token_url" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://accounts.google.com/o/oauth2/token</Value>
@@ -69,7 +69,7 @@
       <Value Profile="(Default)">v1</Value>
     </Setting>
     <Setting Name="gme_api_key" Type="System.String" Scope="Application">
-      <Value Profile="(Default)"></Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="temp_storage_location" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -89,17 +89,11 @@
     <Setting Name="gme_auth_editscopes" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.googleapis.com/auth/mapsengine</Value>
     </Setting>
-    <Setting Name="oauth2_user_isViewOnly" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="dialogs_uploadFilestoGoogleMapsEngine" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Upload a dataset to Google Maps Engine</Value>
     </Setting>
     <Setting Name="dialogs_aboutTitle" Type="System.String" Scope="Application">
       <Value Profile="(Default)">About the Google Maps Engine Connector for ArcGIS Desktop</Value>
-    </Setting>
-    <Setting Name="gme_api_version_createTT" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">create_tt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -91,26 +91,26 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Auth
                 // decode the title of the browser and retrieve the token object
                 log.Debug("Decoding the title string response from the server into a Token object.");
                 log.Debug("Title: " + title);
-                Extension.Auth.OAuth2Token token = Extension.Auth.OAuth2Utilities.decodeTitleResponse(ref log, title, isViewOnly);
+                Extension.Auth.OAuth2Token token = Extension.Auth.OAuth2Utilities.decodeTitleResponse(ref log, title);
 
                 if (token != null)
                 {
                     // raise authentication event, success
                     log.Debug("Raising an authentication event, Authorized.");
-                    ext.publishRaiseAuthenticationStateChangeEvent(true, this.isViewOnly, token);
+                    ext.publishRaiseAuthenticationStateChangeEvent(true, token);
                 }
                 else
                 {
                     // raise authentication event, failed
                     log.Debug("Raising an authentication event, Unauthorized.");
-                    ext.publishRaiseAuthenticationStateChangeEvent(false, this.isViewOnly, null);
+                    ext.publishRaiseAuthenticationStateChangeEvent(false, null);
                 }
             }
             else
             {
                 // the title did not show /approval/, raise an unauthorized event
                 log.Debug("Raising an authentication event, Unauthorized.");
-                ext.publishRaiseAuthenticationStateChangeEvent(false, this.isViewOnly, null);
+                ext.publishRaiseAuthenticationStateChangeEvent(false, null);
             }
         }
 

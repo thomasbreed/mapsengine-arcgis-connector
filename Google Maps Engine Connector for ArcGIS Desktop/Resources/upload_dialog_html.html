@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Google Maps Engine Connectors ToS</title>
@@ -303,13 +303,27 @@ textarea:focus {
         var projectId = "";
         var projectKey = "";
         var access_token = "";
+        var uploadType = "";
 
-        function setConfiguration(projectId, projectKey, access_token) {
+        function setConfiguration(projectId, projectKey, access_token, uploadType) {
             this.projectId = projectId;
             this.projectKey = projectKey;
             this.access_token = access_token;
 
+            setUploadType(uploadType);
+
             init();
+        }
+
+        function setUploadType(uploadType) {
+            // if vector table upload, hide raster only fields
+            this.uploadType = uploadType;
+            if (uploadType == "vector") {
+                document.getElementById("rasterOnlyOptions").style.visibility = 'hidden';
+                document.getElementById("dest_attribution").disabled = true;
+                document.getElementById("dest_acquisitionTime").disabled = true;
+                document.getElementById("dest_maskType").disabled = true;
+            }
         }
 
         function init() {
@@ -366,13 +380,17 @@ textarea:focus {
             var tags = document.getElementById('dest_tags').value;
             var aclName = document.getElementById('dest_acl').value;
             var attrbution = document.getElementById('dest_attribution').value;
+            var acquisitionTime = document.getElementById('dest_acquisitionTime').value;
+            var maskTypeElement = document.getElementById("dest_maskType");
+            var maskType = maskTypeElement.options[maskTypeElement.selectedIndex].value;
 
             // verify required fields have a value
             if (projectId != null && projectId.length > 0
            && name != null && name.length > 0
            && aclName != null && aclName.length > 0
-           && attrbution != null && attrbution.length > 0) {
-                window.external.handleUploadClickEvent(projectId, name, description, tags, aclName, attrbution);
+           && (uploadType == "vector" || (uploadType == "raster" && attrbution != null && attrbution.length > 0))
+           ) {
+                window.external.handleUploadClickEvent(projectId, name, description, tags, aclName, attrbution, acquisitionTime, maskType);
             } else {
                 // the required fields are not filled in, alert
                 alert("The required fields do not have a valid value.");
@@ -383,49 +401,80 @@ textarea:focus {
             window.external.handleCancelClickEvent();
         }
     </script>
-  </head>
-  <body>
+</head>
+<body>
     <div id="content">
-      <div id="header">
-        <div id="onebar">
-          <a title="Google Maps Engine"><div id="mp-logo"></div></a>
+        <div id="header">
+            <div id="onebar">
+                <a title="Google Maps Engine">
+                    <div id="mp-logo">
+                    </div>
+                </a>
+            </div>
         </div>
-      </div>
-      <div id="pagecontent">
-        <h3>Upload geospatial files to Google Maps Engine</h3>
-        <p>Upload geospatial datasets, vector or raster, by first selecting a layer in your
-          ArcMap document.  Once selected, use the following form to define a Google Maps Engine
-          resource, then upload.  The tools will convert source datasets and upload a geospatial
-          file to Google Maps Engine for publishing.</p>
-        <div id="source">
-          <h5>Source</h5>
-          <p>
-            Layer name: {sourcename}<br/>
-            Workspace: {sourceworkspace}<br/>
-            Type: {sourcetype}<br/>
-          </p>
+        <div id="pagecontent">
+            <h3>
+                Upload geospatial files to Google Maps Engine</h3>
+            <p>
+                Upload geospatial datasets, vector or raster, by first selecting a layer in your
+                ArcMap document. Once selected, use the following form to define a Google Maps Engine
+                resource, then upload. The tools will convert source datasets and upload a geospatial
+                file to Google Maps Engine for publishing.</p>
+            <div id="source">
+                <h5>
+                    Source</h5>
+                <p>
+                    Layer name: {sourcename}<br />
+                    Workspace: {sourceworkspace}<br />
+                    Type: {sourcetype}<br />
+                </p>
+            </div>
+            <div id="destination">
+                <h5>
+                    Destination Resource</h5>
+                <p>
+                    <b>Project</b>:
+                    <select name="dest_projectId" id="dest_projectId">
+                    </select><br />
+                    <b>Name</b>:
+                    <br />
+                    <input type="text" name="dest_name" id="dest_name" maxlength="256" size="50"><br />
+                    Description:
+                    <br />
+                    <input type="text" name="dest_desc" id="dest_desc" maxlength="256" size="50"><br />
+                    Tags:
+                    <br />
+                    <input type="text" name="dest_tags" id="dest_tags" maxlength="256" size="50"><br />
+                    <b><i>Map Editor</i> Access List</b>:
+                    <br />
+                    <input type="text" name="dest_acl" id="dest_acl" maxlength="256" size="50" value="Map Editors"><br />
+                    <div id="rasterOnlyOptions">
+                        <b>Attribution</b>:
+                        <br />
+                        <input type="text" name="dest_attribution" id="dest_attribution" maxlength="256"
+                            size="50" /><br />
+                        Acquisition Time:
+                        <br />
+                        <input type="text" name="dest_acquisitionTime" id="dest_acquisitionTime" maxlength="256"
+                            size="50" value="YYYY-MM-DDTHH:MM:SSZ" /><br />
+                        Mask Type:
+                        <br />
+                        <select name="dest_maskType" id="dest_maskType">
+                            <option id="dest_maskType_autoMask" label="autoMask" value="autoMask" selected></option>
+                            <option id="dest_maskType_alphaChannelMask" label="alphaChannelMask" value="alphaChannelMask">
+                            </option>
+                            <option id="dest_maskType_noMask" label="noMask" value="noMask"></option>
+                            <option id="dest_maskType_imageMask" label="imageMask" value="imageMask"></option>
+                        </select>
+                        <br />
+                    </div>
+                </p>
+            </div>
+            <span style="float: right"><a id="add-btn" class="kd-button-action" role="button"
+                title="Upload geospatial files" onclick="uploadClicked()">Upload files</a> <a id="cancel-btn"
+                    class="kd-button" role="button" title="Cancel upload" onclick="cancelClicked()">
+                    Cancel</a> </span>
         </div>
-        <div id="destination">
-          <h5>Destination Resource</h5>
-          <p>
-            <b>Project</b>: <select name="dest_projectId" id="dest_projectId"></select><br/>
-            <b>Name</b>: <br/>
-            <input type="text" name="dest_name" id="dest_name" maxlength="256" size="50"><br/>
-            Description: <br/>
-            <input type="text" name="dest_desc" id="dest_desc" maxlength="256" size="50"><br/>
-            Tags: <br/>
-            <input type="text" name="dest_tags" id="dest_tags" maxlength="256" size="50"><br/>
-            <b>Access List</b>: <br/>
-            <input type="text" name="dest_acl" id="dest_acl" maxlength="256" size="50"><br/>
-            <b>Attribution</b>: <br/>
-            <input type="text" name="dest_attribution" id="dest_attribution" maxlength="256" size="50"><br/>
-          </p>
-        </div>
-        <span style="float:right">
-          <a id="add-btn" class="kd-button-action" role="button" title="Upload geospatial files" onclick="uploadClicked()">Upload files</a>
-          <a id="cancel-btn" class="kd-button" role="button" title="Cancel upload" onclick="cancelClicked()">Cancel</a>
-        </span>
-      </div>
     </div>
-  </body>
+</body>
 </html>

@@ -319,7 +319,6 @@
     </AddInContent>
     <Content Include="Images\LICENSE.txt" />
     <Content Include="Resources\about_dialog_html.html" />
-    <Content Include="Resources\share_google_plus.html" />
     <Content Include="Resources\upload_dialog_html.html" />
   </ItemGroup>
   <ItemGroup>

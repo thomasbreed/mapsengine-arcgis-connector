@@ -26,6 +26,9 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
      */
     public class UploadableVectorTableAsset
     {
+        // The Google Maps Engine project identifier
+        private string _projectId;
+
         // The name of the resource, supplied by a user.
         private string _name;
 
@@ -35,8 +38,8 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
         // files
         private List<UploadableFileName> _files = new List<UploadableFileName>();
 
-        // sharedAccessList
-        private string _sharedAccessList;
+        // Access Control List for Map Editors
+        private string _draftAccessList;
 
         private string _sourceEncoding;
 
@@ -44,20 +47,27 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
 
 
         // constructor
-        public UploadableVectorTableAsset(String name, String description, 
-            List<String> files, string sharedAccessList, 
+        public UploadableVectorTableAsset(String projectId, String name, String description,
+            List<String> files, string draftAccessList, 
             string sourceEncoding, List<String> tags) {
+                this._projectId = projectId;
                 this._name = name;
                 this._description = description;
             for(int k=0; k<files.Count; k++)
                 this._files.Add(new UploadableFileName(files[k]));
-                this._sharedAccessList = sharedAccessList;
+            this._draftAccessList = draftAccessList;
                 this._sourceEncoding = sourceEncoding;
                 this._tags = tags;
         }
 
         #region Getters/Setters
 
+        public string projectId
+        {
+            get { return this._projectId; }
+
+            set { if (this._projectId != value) this._projectId = value; }
+        }
 
         public string name
         {
@@ -78,11 +88,11 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
 
             set { if (this._files != value) this._files = value; }
         }
-        public string sharedAccessList
+        public string draftAccessList
         {
-            get { return this._sharedAccessList; }
+            get { return this._draftAccessList; }
 
-            set { if (this._sharedAccessList != value) this._sharedAccessList = value; }
+            set { if (this._draftAccessList != value) this._draftAccessList = value; }
         }
         public string sourceEncoding
         {

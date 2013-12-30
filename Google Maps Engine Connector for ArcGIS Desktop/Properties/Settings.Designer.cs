@@ -319,18 +319,6 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool oauth2_user_isViewOnly {
-            get {
-                return ((bool)(this["oauth2_user_isViewOnly"]));
-            }
-            set {
-                this["oauth2_user_isViewOnly"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Upload a dataset to Google Maps Engine")]
@@ -346,15 +334,6 @@ namespace com.google.mapsengine.connectors.arcgis.Properties {
         public string dialogs_aboutTitle {
             get {
                 return ((string)(this["dialogs_aboutTitle"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("create_tt")]
-        public string gme_api_version_createTT {
-            get {
-                return ((string)(this["gme_api_version_createTT"]));
             }
         }
     }

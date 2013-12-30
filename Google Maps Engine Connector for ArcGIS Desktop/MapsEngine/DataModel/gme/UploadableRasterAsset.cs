@@ -26,6 +26,9 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
      */
     public class UploadableRasterAsset
     {
+        // The Google Maps Engine project identifier
+        private string _projectId;
+
         // The name of the resource, supplied by a user.
         private string _name;
 
@@ -35,30 +38,46 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
         // files
         private List<UploadableFileName> _files = new List<UploadableFileName>();
 
-        // sharedAccessList
-        private string _sharedAccessList;
+        // The acquisition time object.
+        // All values must be supplied in RFC 3339 date-time format (YYYY-MM-DDTHH:MM:SSZ)
+        private String _acquisitionTime;
+
+        // Access Control List for Map Editors
+        private string _draftAccessList;
 
         private string _attribution;
 
         private List<String> _tags = new List<String>();
 
+        //  The image masking mode. Default is autoMask.
+        // Valid values are: autoMask, alphaChannelMask, noMask, imageMask
+        private String _maskType;
 
         // constructor
-        public UploadableRasterAsset(String name, String description, 
-            List<String> files, string sharedAccessList,
-            string attribution, List<String> tags)
+        public UploadableRasterAsset(String projectId, String name, String description,
+            List<String> files, string draftAccessList,
+            string attribution, List<String> tags, String acquisitionTime, String maskType)
         {
-                this._name = name;
-                this._description = description;
+            this._projectId = projectId;
+            this._name = name;
+            this._description = description;
             for(int k=0; k<files.Count; k++)
                 this._files.Add(new UploadableFileName(files[k]));
-                this._sharedAccessList = sharedAccessList;
-                this._attribution = attribution;
-                this._tags = tags;
+            this._draftAccessList = draftAccessList;
+            this._attribution = attribution;
+            this._tags = tags;
+            this._acquisitionTime = acquisitionTime;
+            this._maskType = maskType;
         }
 
         #region Getters/Setters
 
+        public string projectId
+        {
+            get { return this._projectId; }
+
+            set { if (this._projectId != value) this._projectId = value; }
+        }
 
         public string name
         {
@@ -79,11 +98,11 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
 
             set { if (this._files != value) this._files = value; }
         }
-        public string sharedAccessList
+        public string draftAccessList
         {
-            get { return this._sharedAccessList; }
+            get { return this._draftAccessList; }
 
-            set { if (this._sharedAccessList != value) this._sharedAccessList = value; }
+            set { if (this._draftAccessList != value) this._draftAccessList = value; }
         }
         public string attribution
         {
@@ -91,11 +110,24 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
 
             set { if (this._attribution != value) this._attribution = value; }
         }
+        public string acquisitionTime
+        {
+            get { return this._acquisitionTime; }
+
+            set { if (this._acquisitionTime != value) this._acquisitionTime = value; }
+        }
         public List<String> tags
         {
             get { return this._tags; }
 
             set { if (this._tags != value) this._tags = value; }
+        }
+
+        public string maskType
+        {
+            get { return this._maskType; }
+
+            set { if (this._maskType != value) this._maskType = value; }
         }
 
         #endregion

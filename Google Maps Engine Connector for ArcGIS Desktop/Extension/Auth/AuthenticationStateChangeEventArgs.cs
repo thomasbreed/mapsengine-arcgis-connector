@@ -34,25 +34,20 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
         // a boolean to track the state of a user's authentication
         private bool _isAuthorized;
 
-        // a boolean to track if the user has a view only scope
-        private bool _isViewOnly;
-
         #endregion
 
         // constructor containing both the OAuth token object and a initial state
-        public AuthenticationStateChangeEventArgs(bool isAuthorized, bool isViewOnly, OAuth2Token token)
+        public AuthenticationStateChangeEventArgs(bool isAuthorized, OAuth2Token token)
         {
             this. _isAuthorized = isAuthorized;
             this._token = token;
-            this._isViewOnly = isViewOnly;
         }
 
         // constructor containing only the initial state
-        public AuthenticationStateChangeEventArgs(bool isAuthorized, bool isViewOnly)
+        public AuthenticationStateChangeEventArgs(bool isAuthorized)
         {
             this._isAuthorized = isAuthorized;
             this._token = null;
-            this._isViewOnly = isViewOnly;
         }
 
         #region Getter/Setter Functions
@@ -69,13 +64,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
         {
             get { return _isAuthorized; }
             set { _isAuthorized = value; }
-        }
-
-        // a getter/setter function for the boolean view only
-        public bool isViewOnly
-        {
-            get { return _isViewOnly; }
-            set { _isViewOnly = value; }
         }
 
         #endregion

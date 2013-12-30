@@ -66,8 +66,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
                 log.Debug("token_type= " + token.token_type);
                 token.refresh_token = Properties.Settings.Default.oauth2_user_refresh_token;
                 log.Debug("refresh_token= " + token.refresh_token);
-                token.isViewOnly = Properties.Settings.Default.oauth2_user_isViewOnly;
-                log.Debug("isViewOnly= " + token.isViewOnly);
 
                 // return the token
                 log.Debug("Returning the token object.");
@@ -106,8 +104,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
                 log.Debug("oauth2_user_token_type= " + token.token_type);
                 Properties.Settings.Default.oauth2_user_refresh_token = token.refresh_token;
                 log.Debug("oauth2_user_refresh_token= " + token.refresh_token);
-                Properties.Settings.Default.oauth2_user_isViewOnly = token.isViewOnly;
-                log.Debug("oauth2_user_isViewOnly= " + token.isViewOnly);
 
                 // save the user's profile
                 log.Debug("Saving the user's settings profile.");
@@ -255,7 +251,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
          * Utility function used to decode the browser title upon
          * successful authentication by the user
          */
-        public static OAuth2Token decodeTitleResponse(ref ILog log, string title, bool isViewOnly)
+        public static OAuth2Token decodeTitleResponse(ref ILog log, string title)
         {
             log.Debug("Browser title = \"" + title + "\"");
 
@@ -288,7 +284,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
 
                     // immediately trade in code for token, as it expires
                     log.Debug("Trading in the short-term code for a longer-term responce and access token.  Then return it to the requestor.");
-                    return tradeCodeForToken(ref log, code, isViewOnly);
+                    return tradeCodeForToken(ref log, code);
 
                     // raise authorized event
                     //OnRaiseCustomEvent(new CustomEventArgs("Authorized"));
@@ -321,7 +317,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
         /*
          * Utility function to trade in a code snippet for a valid OAuth 2.0 token
          */
-        public static OAuth2Token tradeCodeForToken(ref ILog log, string code, bool isViewOnly)
+        public static OAuth2Token tradeCodeForToken(ref ILog log, string code)
         {
             log.Debug("Attempting to trade in a code snippet for an OAuth 2.0 access token.");
             log.Debug("code=" + code);
@@ -429,10 +425,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
                         OAuth2Token token = DeserializeResponseToken(ref log, response);
                         log.Debug("Deserialization complete and token object created.");
 
-                        // set the requested and validated scopes
-                        log.Debug("Setting the requested scopes.");
-                        token.isViewOnly = isViewOnly;
-
                         // store the token in the users profile
                         log.Debug("Save and set the token object in the user's profile.");
                         setToken(ref log, token);
@@ -461,7 +453,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
             }
         }
 
-        public static OAuth2Token tradeRefreshForToken(ref ILog log, string code, bool isViewOnly)
+        public static OAuth2Token tradeRefreshForToken(ref ILog log, string code)
         {
             // attempting to trade in a refresh code for an auth token
             log.Debug("Attempting to trade in a refresh code for another auth code.");
@@ -625,8 +617,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Auth
                 // trade in the code for an updated temporary token
                 //return tradeCodeForToken(ref log, Properties.Settings.Default.oauth2_user_code);
                 log.Debug("Returning the result from a refresh trade in.");
-                return tradeRefreshForToken(ref log, Properties.Settings.Default.oauth2_user_refresh_token, 
-                    Properties.Settings.Default.oauth2_user_isViewOnly);
+                return tradeRefreshForToken(ref log, Properties.Settings.Default.oauth2_user_refresh_token);
             }
             else
             {

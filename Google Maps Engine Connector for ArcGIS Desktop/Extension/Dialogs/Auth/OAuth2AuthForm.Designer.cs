@@ -56,7 +56,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Auth
             this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
             this.webBrowser.ScriptErrorsSuppressed = true;
-            this.webBrowser.Size = new System.Drawing.Size(984, 462);
+            this.webBrowser.Size = new System.Drawing.Size(484, 562);
             this.webBrowser.TabIndex = 0;
             this.webBrowser.WebBrowserShortcutsEnabled = false;
             this.webBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser_Navigated);
@@ -66,13 +66,13 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Auth
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(984, 462);
+            this.ClientSize = new System.Drawing.Size(484, 562);
             this.Controls.Add(this.webBrowser);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1000, 500);
+            this.MaximumSize = new System.Drawing.Size(1000, 800);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1000, 500);
+            this.MinimumSize = new System.Drawing.Size(500, 600);
             this.Name = "OAuth2AuthForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
