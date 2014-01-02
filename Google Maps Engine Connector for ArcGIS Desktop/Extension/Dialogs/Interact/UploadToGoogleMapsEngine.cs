@@ -297,7 +297,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
                         // Initiate upload of file(s)
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Starting to upload files...");
-                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, tempDir.GetFiles());
+                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, "tables", tempDir.GetFiles());
 
                         // launch a web browser
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Launching a web browser.");
@@ -335,7 +335,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
                         // Initiate upload of file(s)
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Starting to upload files...");
-                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, tempDir.GetFiles());
+                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, "rasters", tempDir.GetFiles());
 
                         // launch a web browser
                         ext.publishRaiseDownloadProgressChangeEvent(false, "Launching a web browser.");

@@ -655,7 +655,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
             return null;
         }
 
-        public void uploadFilesToAsset(Extension.Auth.OAuth2Token token, String assetId, System.IO.FileInfo[] files)
+        public void uploadFilesToAsset(Extension.Auth.OAuth2Token token, String assetId, String assetType, System.IO.FileInfo[] files)
         {
             try
             {
@@ -673,7 +673,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     if (!file.Name.EndsWith(".lock"))
                     {
                         // upload the selected file
-                        bool wasPostSuccessful = streamingUploadFileToAsset(token, assetId, file);
+                        bool wasPostSuccessful = streamingUploadFileToAsset(token, assetId, assetType, file);
                     }
 
                     // incrament
@@ -689,7 +689,7 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
             }
         }
 
-        private bool streamingUploadFileToAsset(Extension.Auth.OAuth2Token token, String assetId, System.IO.FileInfo file)
+        private bool streamingUploadFileToAsset(Extension.Auth.OAuth2Token token, String assetId, String assetType, System.IO.FileInfo file)
         {
             // create a random number generator to handle exponential backoff
             Random randomGenerator = new Random();
@@ -700,7 +700,19 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                 try
                 {
                     // create a request Url
-                    String RequestUrl = "https://www.googleapis.com/upload/mapsengine/create_tt/tables/" + assetId + "/files?uploadType=multipart&filename=" + file.Name;
+                    //https://www.googleapis.com/upload/mapsengine/v1/{tables,rasters}/{asset_id}/files?filename={filename}
+                    log.Debug("Building the Google Maps Engine API request URL.");
+                    String RequestUrl = GME_API_PROTOCOL
+                        + "://" + GME_API_DOMAIN
+                        + "/" + "upload"
+                        + "/" + GME_API_SERVICE
+                        + "/" + Properties.Settings.Default.gme_api_version
+                        + "/" + assetType
+                        + "/" + assetId
+                        + "/" + "files"
+                        + "?" + "uploadType=multipart"
+                        + "&" + "filename=" + file.Name;
+                    log.Debug("Request Url: " + RequestUrl);
 
                     string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
                     byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
