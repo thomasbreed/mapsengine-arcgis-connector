@@ -30,6 +30,8 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
         protected static readonly ILog log = LogManager.GetLogger(typeof(ToolsCommand_FindAsset));
 
         GoogleMapsEngineToolsExtensionForArcGIS ext;
+        
+        private String selectedProject;
 
         public ToolsCommand_FindAsset()
         {
@@ -103,7 +105,12 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
                 {
                     Extension.Dialogs.Directory.GoogleMapsEngineDirectoryListing directory = new Extension.Dialogs.Directory.GoogleMapsEngineDirectoryListing();
                     //Extension.Dialogs.Directory.MapDirectory directory = new Extension.Dialogs.Directory.MapDirectory(ext);
-                    directory.Show();
+                    if (!String.IsNullOrEmpty(selectedProject))
+                    {
+                        directory.SelectedProject = selectedProject;
+                    }
+                    directory.ShowDialog();
+                    selectedProject = directory.SelectedProject;
                 }
                 else
                 {

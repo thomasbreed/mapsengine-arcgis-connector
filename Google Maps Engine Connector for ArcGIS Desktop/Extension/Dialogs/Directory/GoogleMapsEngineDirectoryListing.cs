@@ -55,6 +55,15 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Directory
         protected Boolean isRequestThroughAPI = false;
 
 
+        /*
+         * Set the project selected in the drop-down. Used to preserve selection between multiple openings.
+         */
+        public String SelectedProject
+        {
+            get;
+            set;
+        }
+
         /* 
          * Constructor for the Directory Listing form
          */
@@ -108,12 +117,19 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Directory
 
                 // set the ddl data source as the newly downloaded project
                 log.Debug("Setting the projects object as the data source for the drop down list.");
+                // we will be setting this project selected if its present in the cache. 
+                // we need to locally cache it as setting the ddlProjects.DataSource will overwrite SelectedProject
+                String temporarySelectedProject = this.SelectedProject;
                 this.ddlProjects.DataSource = projects;
                 this.ddlProjects.DisplayMember = "name";
                 this.ddlProjects.ValueMember = "id";
 
-                // kick off the 
-                //ddlProjects_SelectedIndexChanged(null, null);
+                // if the Projects include our stored SelectedProject from the last time this dialog was open
+                // set it as selected now.
+                if ((!String.IsNullOrEmpty(temporarySelectedProject)) && (null != projects.FirstOrDefault(x => x.name == temporarySelectedProject)))
+                {
+                    this.ddlProjects.SelectedIndex = projects.FindIndex(x => x.name == temporarySelectedProject);
+                }
             }
             catch (System.Exception ex)
             {
@@ -320,6 +336,9 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Directory
                 {
                     return firstMap.name.CompareTo(nextMap.name);
                 });
+                
+                // store the selected project name so that if we reopen this dialog later it is pre-selected
+                this.SelectedProject = ((MapsEngine.DataModel.gme.Project)this.ddlProjects.SelectedItem).name;
 
                 // set the datagrid data source as the newly downloaded maps
                 log.Debug("Setting the maps object as the data source for the grid.");
