@@ -407,11 +407,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
             // This method can be called from JavaScript.
             public void handleUploadClickEvent(String projectId, String name, String description, String tags, String draftAccessList, String attribution, String acquisitionTime, String maskType)
             {
-                // need to insure tags is not null to avoid exceptions when splitting (cannot be set from javascript as empty strings marshall as a null).
-                if (null == tags)
-                {
-                    tags = "";
-                }
                 // Call a method on the form.
                 mForm.uploadButtonClicked(projectId, name, description, tags, draftAccessList, attribution, acquisitionTime, maskType);
             }
