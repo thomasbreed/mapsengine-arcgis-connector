@@ -236,6 +236,13 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
         protected void uploadButtonClicked(String projectId, String name, String description, String tags, String draftAccessList, String attribution, String acquisitionTime, String maskType)
         {
+            // tags must not be null due to splits below or a null reference error occurs.
+            // empty string handles properly.
+            if (null == tags)
+            {
+                tags = "";
+            }
+
             try
             {
                 // create a new Processing Dialog
