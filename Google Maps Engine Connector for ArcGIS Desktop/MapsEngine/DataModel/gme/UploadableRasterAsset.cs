@@ -71,12 +71,19 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
         }
 
         #region Getters/Setters
-
-        public string projectId
+        
+        public string attribution
         {
-            get { return this._projectId; }
+            get { return this._attribution; }
 
-            set { if (this._projectId != value) this._projectId = value; }
+            set { if (this._attribution != value) this._attribution = value; }
+        }
+
+        public string draftAccessList
+        {
+            get { return this._draftAccessList; }
+
+            set { if (this._draftAccessList != value) this._draftAccessList = value; }
         }
 
         public string name
@@ -86,41 +93,39 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
             set { if (this._name != value) this._name = value; }
         }
 
+
+        public string projectId
+        {
+            get { return this._projectId; }
+
+            set { if (this._projectId != value) this._projectId = value; }
+        }
+
+        public string rasterType
+        {
+            get { return "image"; }
+            set { }
+        }
+        
         public string description
         {
             get { return this._description; }
 
             set { if (this._description != value) this._description = value; }
         }
-        public List<UploadableFileName> files
-        {
-            get { return this._files; }
 
-            set { if (this._files != value) this._files = value; }
-        }
-        public string draftAccessList
-        {
-            get { return this._draftAccessList; }
-
-            set { if (this._draftAccessList != value) this._draftAccessList = value; }
-        }
-        public string attribution
-        {
-            get { return this._attribution; }
-
-            set { if (this._attribution != value) this._attribution = value; }
-        }
-        public string acquisitionTime
-        {
-            get { return this._acquisitionTime; }
-
-            set { if (this._acquisitionTime != value) this._acquisitionTime = value; }
-        }
         public List<String> tags
         {
             get { return this._tags; }
 
             set { if (this._tags != value) this._tags = value; }
+        }
+        
+        public List<UploadableFileName> files
+        {
+            get { return this._files; }
+
+            set { if (this._files != value) this._files = value; }
         }
 
         public string maskType
@@ -129,7 +134,14 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme
 
             set { if (this._maskType != value) this._maskType = value; }
         }
+                
+        public string acquisitionTime
+        {
+            get { return this._acquisitionTime; }
 
+            set { if (this._acquisitionTime != value) this._acquisitionTime = value; }
+        }
+        
         #endregion
     }
 }

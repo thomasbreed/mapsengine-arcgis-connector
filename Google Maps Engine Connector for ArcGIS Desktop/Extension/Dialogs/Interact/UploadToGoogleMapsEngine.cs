@@ -33,6 +33,9 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.DataSourcesFile;
 using ESRI.ArcGIS.GISClient;
 using ESRI.ArcGIS.Geoprocessor;
+using com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Processing;
+using com.google.mapsengine.connectors.arcgis.MapsEngine.DataModel.gme;
+using com.google.mapsengine.connectors.arcgis.Extension.Data;
 
 namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 {
@@ -245,9 +248,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
 
             try
             {
-                // create a new Processing Dialog
-                Dialogs.Processing.ProgressDialog processingDialog = new Processing.ProgressDialog();
-
                 // check to see if the layer is valid 
                 // and destination is configured correctly
                 if (isLayerValidated
@@ -256,8 +256,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                     && draftAccessList != null && draftAccessList.Length > 0
                     && uploadType.Equals("vector") || (uploadType.Equals("raster") && attribution != null && attribution.Length > 0))
                 {
-                    // show the processing dialog
-                    processingDialog.Show();
 
                     // create a reference to the Google Maps Engine API
                     MapsEngine.API.GoogleMapsEngineAPI api = new MapsEngine.API.GoogleMapsEngineAPI(ref log);
@@ -272,16 +270,15 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                     System.IO.DirectoryInfo tempDir
                         = System.IO.Directory.CreateDirectory(ext.getLocalWorkspaceDirectory() + "\\" + System.Guid.NewGuid());
 
+
+
+                    List<IndeterminateProgressBar.ProcessStep> steps = new List<IndeterminateProgressBar.ProcessStep>();
+                    
                     // determine what type of layer is selected
                     if (selectedLayer is ESRI.ArcGIS.Carto.IFeatureLayer)
                     {
                         // export a copy of the feature class to a "uploadable" Shapefile
-                        // raise a processing notification
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Extracting a copy of '" + selectedLayer.Name + "' (feature class) for data upload.");
                         ExportLayerToShapefile(tempDir.FullName, selectedLayer.Name, selectedLayer);
-
-                        processingDialog.Update();
-                        processingDialog.Focus();
 
                         // create a list of files in the temp directory
                         List<String> filesNames = new List<String>();
@@ -289,36 +286,72 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                             if (!tempDir.GetFiles()[k].Name.EndsWith(".lock"))
                                 filesNames.Add(tempDir.GetFiles()[k].Name);
 
-                        // create a Google Maps Engine asset record
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Requesting a new Google Maps Engine asset be created.");
-                        MapsEngine.DataModel.gme.UploadingAsset uploadingAsset
-                            = api.createVectorTableAssetForUploading(ext.getToken(),
-                            MapsEngine.API.GoogleMapsEngineAPI.AssetType.table,
-                            projectId,
-                            name,
-                            draftAccessList,
-                            filesNames,
-                            description,
-                            tags.Split(",".ToCharArray()).ToList<String>(),
-                            "UTF-8");
+                        String id = "";
 
-                        // Initiate upload of file(s)
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Starting to upload files...");
-                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, "tables", tempDir.GetFiles());
+                        IndeterminateProgressBar.ProcessStep stagingStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Requesting a new Google Maps Engine asset be created...",
+                            process = () => 
+                            {
+                                MapsEngine.DataModel.gme.UploadingAsset uploadingAsset
+                                    = api.createVectorTableAssetForUploading(ext.getToken(),
+                                        MapsEngine.API.GoogleMapsEngineAPI.AssetType.table,
+                                        projectId,
+                                        name,
+                                        draftAccessList,
+                                        filesNames,
+                                        description,
+                                        tags.Split(",".ToCharArray()).ToList<String>(),
+                                        "UTF-8");
+                                if (null != uploadingAsset)
+                                    id = uploadingAsset.id;
+                            }
+                        };
+                        steps.Add(stagingStep);
 
-                        // launch a web browser
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Launching a web browser.");
-                        System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid=" + projectId +"&v=DETAIL_INFO&aid=" + uploadingAsset.id);
+                        IndeterminateProgressBar.ProcessStep uploadStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Uploading Files...",
+                            process = () => 
+                            { 
+                                api.uploadFilesToAsset(ext.getToken(), id, "tables", tempDir.GetFiles());
+                                System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid=" + projectId + "&v=DETAIL_INFO&aid=" + id);
+                            }
+                        };
+                        steps.Add(uploadStep);
+
+                        IndeterminateProgressBar.ProcessStep waitForTableProcessingStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Waiting for table processing...",
+                            process = () =>
+                            {
+                                api.waitOnTableProcessing(ext.getToken(), id);
+                            }
+                        };
+                        steps.Add(waitForTableProcessingStep);
+
+                        NewMapLayer newLayerDefinition = LayerConversionUtilities.convert((IGeoFeatureLayer)selectedLayer, name, projectId, id, draftAccessList);
+                            
+
+                        IndeterminateProgressBar.ProcessStep createLayerStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Creating layer...",
+                            process = () =>
+                            {
+                                newLayerDefinition.datasources[0].id = id;
+                                MapLayer ml = api.createLayer(ext.getToken(), newLayerDefinition);
+                                System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid=" + projectId + "&v=DETAIL_INFO&aid=" + ml.id);
+                            }
+                        };
+                        steps.Add(createLayerStep);
+
+
                     }
                     else if (selectedLayer is ESRI.ArcGIS.Carto.IRasterLayer)
                     {
                         // export a copy of the raster to a format that can be uploaded
                         // raise a processing notification
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Extracting a copy of '" + selectedLayer.Name + "' (raster) for data upload.");
                         ExportLayerToUploadableRaster(tempDir.FullName, selectedLayer.Name, selectedLayer);
-
-                        processingDialog.Update();
-                        processingDialog.Focus();
 
                         // create a list of files in the temp directory
                         List<String> filesNames = new List<String>();
@@ -326,28 +359,70 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                             if (!tempDir.GetFiles()[k].Name.EndsWith(".lock"))
                                 filesNames.Add(tempDir.GetFiles()[k].Name);
 
-                        // create a Google Maps Engine asset record
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Requesting a new Google Maps Engine asset be created.");
-                        MapsEngine.DataModel.gme.UploadingAsset uploadingAsset
-                            = api.createRasterAssetForUploading(ext.getToken(),
-                            projectId,
-                            name,
-                            draftAccessList,
-                            attribution, // attribution
-                            filesNames,
-                            description,
-                            tags.Split(",".ToCharArray()).ToList<String>(),
-                            acquisitionTime,
-                            maskType);
+                        String id = "";
+                        IndeterminateProgressBar.ProcessStep stagingStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Requesting a new Google Maps Engine asset be created...",
+                            process = () =>
+                            {
+                                MapsEngine.DataModel.gme.UploadingAsset uploadingAsset
+                                = api.createRasterAssetForUploading(ext.getToken(),
+                                    projectId,
+                                    name,
+                                    draftAccessList,
+                                    attribution, // attribution
+                                    filesNames,
+                                    description,
+                                    tags.Split(",".ToCharArray()).ToList<String>(),
+                                    acquisitionTime,
+                                    maskType);
+                                if (null != uploadingAsset)
+                                    id = uploadingAsset.id;
+                            }
+                        };
+                        steps.Add(stagingStep);
 
-                        // Initiate upload of file(s)
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Starting to upload files...");
-                        api.uploadFilesToAsset(ext.getToken(), uploadingAsset.id, "rasters", tempDir.GetFiles());
+                        IndeterminateProgressBar.ProcessStep uploadStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Uploading Files...",
+                            process = () => 
+                            { 
+                                api.uploadFilesToAsset(ext.getToken(), id, "rasters", tempDir.GetFiles());
+                                System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid=" + projectId + "&v=DETAIL_INFO&aid=" + id);
+                            }
+                        };
+                        steps.Add(uploadStep);
 
-                        // launch a web browser
-                        ext.publishRaiseDownloadProgressChangeEvent(false, "Launching a web browser.");
-                        System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid="+ projectId +"&v=DETAIL_INFO&aid=" + uploadingAsset.id);
+                        IndeterminateProgressBar.ProcessStep waitForRasterProcessingStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Waiting for image processing...",
+                            process = () =>
+                            {
+                                api.waitOnRasterProcessing(ext.getToken(), id);
+                            }
+                        };
+                        steps.Add(waitForRasterProcessingStep);
+
+                        NewMapLayer newLayerDefinition = LayerConversionUtilities.convert(name, projectId, id, draftAccessList);
+
+                        IndeterminateProgressBar.ProcessStep createLayerStep = new IndeterminateProgressBar.ProcessStep()
+                        {
+                            description = "Creating layer...",
+                            process = () =>
+                            {
+                                newLayerDefinition.datasources[0].id = id;
+                                MapLayer ml = api.createLayer(ext.getToken(), newLayerDefinition);
+                                System.Diagnostics.Process.Start("https://mapsengine.google.com/admin/#RepositoryPlace:cid=" + projectId + "&v=DETAIL_INFO&aid=" + ml.id);
+                            }
+                        };
+                        steps.Add(createLayerStep);
+
                     }
+                    
+                    // performs upload and layer creation in a separate thread while tracking
+                    // for cancels and displaying indeterminate progress bar
+                    IndeterminateProgressBar attempt = new IndeterminateProgressBar();
+                    attempt.runProcesses(steps);
 
                     // Ask the user if the temporary files should be deleted
                     DialogResult dialogResult = MessageBox.Show(
@@ -369,10 +444,6 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Interact
                         }
                         catch (Exception) { }
                     }
-
-                    // close the processing dialog
-                    ext.publishRaiseDownloadProgressChangeEvent(true, "Finished");
-                    processingDialog.Close();
                 }
                 else
                 {

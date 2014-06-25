@@ -90,7 +90,7 @@
       <Value Profile="(Default)">https://www.googleapis.com/auth/mapsengine</Value>
     </Setting>
     <Setting Name="dialogs_uploadFilestoGoogleMapsEngine" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Upload a dataset to Google Maps Engine</Value>
+      <Value Profile="(Default)">Upload a layer to Google Maps Engine</Value>
     </Setting>
     <Setting Name="dialogs_aboutTitle" Type="System.String" Scope="Application">
       <Value Profile="(Default)">About the Google Maps Engine Connector for ArcGIS Desktop</Value>

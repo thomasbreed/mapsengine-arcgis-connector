@@ -114,6 +114,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                 log.Debug("Deserializing the Json response from the API into a ProjectList object.");
                 projects = JsonConvert.DeserializeObject<ProjectList>(jsonResponse).projects;
             }
+            catch (ThreadAbortException e)
+            {
+                throw e;
+            }
             catch (System.Exception ex)
             {
                 // an exception has occured, log and throw
@@ -169,6 +173,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     log.Debug("Next page exists, fetching next page.");
                     maps.AddRange(getMapsByProjectId(token, projectId, mapsList.nextPageToken));
                 }
+            }
+            catch (ThreadAbortException e)
+            {
+                throw e;
             }
             catch (System.Exception ex)
             {
@@ -226,6 +234,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     maps.AddRange(getMapsByProjectId(token, projectId, mapsList.nextPageToken));
                 }
             }
+            catch (ThreadAbortException e)
+            {
+                throw e;
+            }
             catch (System.Exception ex)
             {
                 // an exception has occured, log and throw
@@ -268,6 +280,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                 // return the map
                 return map;
             }
+            catch (ThreadAbortException e)
+            {
+                throw e;
+            }
             catch (System.Exception ex)
             {
                 // an exception has occured, log and throw
@@ -306,6 +322,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
 
                 // return the asset
                 return asset;
+            }
+            catch (ThreadAbortException e)
+            {
+                throw e;
             }
             catch (System.Exception ex)
             {
@@ -423,6 +443,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                         }
                     }
                 }
+                catch (ThreadAbortException e)
+                {
+                    throw e;
+                }
                 catch (Exception ex)
                 {
                     // an exception has occured, log and throw
@@ -527,6 +551,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                                     // close the writer
                                     sw.Close();
                                 }
+                                catch (ThreadAbortException e)
+                                {
+                                    throw e;
+                                }
                                 catch (Exception) { }
                             }
 
@@ -551,6 +579,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                             Thread.Sleep((1 << n) * 1000 + randomGenerator.Next(1001));
                         }
                     }
+                }
+                catch (ThreadAbortException e)
+                {
+                    throw e;
                 }
                 catch (Exception ex)
                 {
@@ -603,6 +635,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     return uploadingAsset;
                 }
             }
+            catch (ThreadAbortException e)
+            {
+                throw e;
+            }
             catch (System.Exception ex)
             {
                 // TODO: handle gracefully
@@ -629,8 +665,8 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                     + "/" + Properties.Settings.Default.gme_api_version
                     + "/" + "rasters"
                     + "/" + "upload"
-                    + "?" + "projectId=" + projectId
-                    + "&" + "key=" + GOOGLE_API_KEY;
+                    + "?" + "key=" + GOOGLE_API_KEY; ;
+    
                 log.Debug("Request Url: " + RequestUrl);
 
                 // serialize the requestAsset into json
@@ -645,6 +681,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
 
                 // return the uploading asset
                 return uploadingAsset;
+            }
+            catch (ThreadAbortException e)
+            {
+                throw e;
             }
             catch (System.Exception ex)
             {
@@ -682,6 +722,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
 
                 // raise a processing notification
                 ext.publishRaiseDownloadProgressChangeEvent(false, "All files have been uploaded.", files.Count(), fileCounter);
+            }
+            catch (ThreadAbortException e)
+            {
+                throw e;
             }
             catch (Exception e)
             {
@@ -811,6 +855,10 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
                         }
                     }
                 }
+                catch (ThreadAbortException e)
+                {
+                    throw e;
+                }
                 catch (Exception e)
                 {
                     System.Windows.Forms.MessageBox.Show("Error: " + e.Message);
@@ -831,6 +879,102 @@ namespace com.google.mapsengine.connectors.arcgis.MapsEngine.API
             image,
             rasterCollection,
             table
+        }
+
+        /*
+        * Upload a layer creation request for the authenticated user.
+        */
+        public MapLayer createLayer(Extension.Auth.OAuth2Token token, NewMapLayer layerCreation)
+        {
+            string apiRequestUrl = GME_API_PROTOCOL
+                + "://" + GME_API_DOMAIN
+                + "/" + GME_API_SERVICE
+                + "/" + GME_API_VERSION
+                + "/" + "layers"
+                + "?" + "key=" + GOOGLE_API_KEY
+                + "&" + "process=true";
+
+            log.Debug("Request Url: " + apiRequestUrl);
+
+            String payload = JsonConvert.SerializeObject(layerCreation, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            // utter hack - operator is a C# keyword
+            payload = payload.Replace("OPERATOR_HOLDING_STRING", "operator");
+
+            // utter hack - need to shim double and strings both into value
+            log.Debug("Layer to Create: " + payload);
+            String jsonResponse = makeGoogleMapsEnginePostRequest(apiRequestUrl, token.access_token, payload);
+            MapLayer mapLayer = JsonConvert.DeserializeObject<MapLayer>(jsonResponse);
+            return mapLayer;
+        }
+
+        public bool waitOnTableProcessing(Extension.Auth.OAuth2Token token, String tableId)
+        {
+            log.Debug("Polling for table processing completion");
+
+            string apiRequestUrl = GME_API_PROTOCOL
+                + "://" + GME_API_DOMAIN
+                + "/" + GME_API_SERVICE
+                + "/" + GME_API_VERSION
+                + "/" + "tables"
+                + "/" + tableId
+                + "?" + "key=" + GOOGLE_API_KEY;
+
+            log.Debug("Request Url: " + apiRequestUrl);
+
+            Func<bool> fetchStatus = () =>
+            {
+                String jsonResponse = makeGoogleMapsEngineRequest(apiRequestUrl, token.access_token);
+                if (jsonResponse.Contains("\"processingStatus\": \"failed\""))
+                    throw new Exception();
+                else return jsonResponse.Contains("\"processingStatus\": \"complete\"");
+            };
+
+            try
+            {
+                while (!fetchStatus())
+                {
+                    Thread.Sleep(5000);
+                }
+                return true;
+            }
+            catch { }
+
+            return false;
+        }
+
+        public bool waitOnRasterProcessing(Extension.Auth.OAuth2Token token, String rasterId)
+        {
+            log.Debug("Polling for table processing completion");
+
+            string apiRequestUrl = GME_API_PROTOCOL
+                + "://" + GME_API_DOMAIN
+                + "/" + GME_API_SERVICE
+                + "/" + GME_API_VERSION
+                + "/" + "rasters"
+                + "/" + rasterId
+                + "?" + "key=" + GOOGLE_API_KEY;
+
+            log.Debug("Request Url: " + apiRequestUrl);
+
+            Func<bool> fetchStatus = () =>
+            {
+                String jsonResponse = makeGoogleMapsEngineRequest(apiRequestUrl, token.access_token);
+                if (jsonResponse.Contains("\"processingStatus\": \"failed\""))
+                    throw new Exception();
+                else return jsonResponse.Contains("\"processingStatus\": \"complete\"");
+            };
+
+            try
+            {
+                while (!fetchStatus())
+                {
+                    Thread.Sleep(5000);
+                }
+                return true;
+            }
+            catch { }
+
+            return false;
         }
     }
 }
