@@ -82,6 +82,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Processing
             this.ShowInTaskbar = false;
             this.Text = "IndeterminateProgressBar";
             this.TopMost = true;
+            this.Shown += new System.EventHandler(this.IndeterminateProgressBar_Shown);
             this.ResumeLayout(false);
 
         }

@@ -74,28 +74,41 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Dialogs.Processing
             }
         }
 
+        private List<ProcessStep> steps;
+
         internal void runProcesses(List<ProcessStep> steps)
         {
-            Thread processThread = new Thread(delegate()
-            {
-                try
-                {
-                    foreach (ProcessStep step in steps)
-                    {
-                        this.BeginInvoke(new Action<String>((x) => { this.setText(x); }),
-                                            new Object[] { step.description });
-
-                        step.process();
-                    }
-                    this.BeginInvoke(new Action(() => { this.Close(); }), new Object[] { });
-                }
-                catch (ThreadAbortException e) { }
-            });
-            EventHandler ev = (sender, e) => { processThread.Abort(); };
-            this.canceled += ev;
-
-            processThread.Start();
+            this.steps = steps;
+            
             this.ShowDialog();
+            
+            
+        }
+
+        private void IndeterminateProgressBar_Shown(object sender, EventArgs e)
+        {
+            if (steps != null)
+            {
+                Thread processThread = new Thread(delegate()
+                {
+                    try
+                    {
+                        foreach (ProcessStep step in steps)
+                        {
+                            this.BeginInvoke(new Action<String>((x) => { this.setText(x); }),
+                                                new Object[] { step.description });
+
+                            step.process();
+                        }
+                        this.BeginInvoke(new Action(() => { this.Close(); }), new Object[] { });
+                    }
+                    catch (ThreadAbortException ex) { }
+                });
+                EventHandler ev = (s, e1) => { processThread.Abort(); };
+                this.canceled += ev;
+
+                processThread.Start();
+            }
         }
 
     }

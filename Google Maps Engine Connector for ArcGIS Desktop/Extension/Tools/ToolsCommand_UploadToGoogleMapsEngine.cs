@@ -129,7 +129,7 @@ namespace com.google.mapsengine.connectors.arcgis.Extension.Tools
                     // open the upload dialog
                     Dialogs.Interact.UploadToGoogleMapsEngine dialog 
                         = new Dialogs.Interact.UploadToGoogleMapsEngine(ref ext);
-                    dialog.Show();
+                    dialog.ShowDialog();
                 }
                 else
                 {
